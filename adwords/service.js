@@ -20,6 +20,7 @@ class AdwordsService {
         this.credentials = credentials;
         this.auth = new AdwordsAuth(credentials);
         this.serviceDescriptor = serviceDescriptor;
+        this.extraSoapHeaders = {};
         this.registerServiceDescriptorMethods(this.serviceDescriptor.methods);
     }
 
@@ -128,10 +129,14 @@ class AdwordsService {
                 developerToken: this.credentials.developerToken,
                 userAgent: this.credentials.userAgent,
                 validateOnly: !!this.credentials.validateOnly
-            }
+            };
 
             if (this.credentials.clientCustomerId) {
                 headers.clientCustomerId = this.credentials.clientCustomerId;
+            }
+
+            if (this.extraSoapHeaders) {
+                Object.assign(headers, this.extraSoapHeaders);
             }
 
             this.client.addSoapHeader({
